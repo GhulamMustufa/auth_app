@@ -1,97 +1,196 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# React Native Authentication App 🚀
 
-# Getting Started
+Hey there! 👋 
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+This is a complete React Native authentication app that I built to demonstrate a full auth flow using React Context API and AsyncStorage. Think of it as a simple, clean way to handle user authentication in your mobile app.
 
-## Step 1: Start Metro
+## What's This About?
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+So you know how every app needs users to sign up and log in? Well, this app does exactly that - but in a really clean, maintainable way. No complicated state management libraries, no over-engineered solutions. Just React Context, AsyncStorage, and some good old-fashioned React hooks.
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## What Can You Do With This App?
 
-```sh
-# Using npm
-npm start
+### 🔐 Sign Up
+Create a new account with your name, email, and password. The app stores all registered users in AsyncStorage, so you can come back later and log in with the same credentials.
 
-# OR using Yarn
-yarn start
+### 🔑 Log In
+Already have an account? Just enter your email and password. The app checks if you're registered and lets you in if everything matches.
+
+### 🏠 Home Screen
+Once you're logged in, you'll see a nice welcome screen with your name and email displayed. There's also a logout button if you want to sign out.
+
+### 💾 Persistent Sessions
+The cool part? If you close the app and come back later, you'll still be logged in! The app remembers your session using AsyncStorage.
+
+## Screenshots
+
+Here's what the app looks like:
+
+### Login Screen
+![Login Screen](./screenshots/login-screen.png)
+*Clean and simple login interface with email and password fields. The password field has a "Show" toggle so you can see what you're typing.*
+
+### Signup Screen
+![Signup Screen](./screenshots/signup-screen.png)
+*The signup screen where new users can create an account. It asks for name, email, and password (minimum 6 characters).*
+
+### Home Screen
+![Home Screen](./screenshots/home-screen.png)
+*After successful login, you'll see your name and email displayed in a nice card, along with a logout button.*
+
+## How It Works
+
+### The Flow
+
+1. **First Time?** 
+   - Open the app → You'll see the Login screen
+   - Tap "Sign Up" → Fill in your details → Tap "Sign Up" button
+   - You'll be redirected to the Login screen (no auto-login)
+   - Enter your credentials → Tap "Login"
+   - Welcome to your Home screen! 🎉
+
+2. **Coming Back?**
+   - If you're already logged in, you'll go straight to Home
+   - If you logged out, you'll see the Login screen again
+
+3. **Want to Log Out?**
+   - Just tap the red "Logout" button on the Home screen
+   - You'll be taken back to the Login screen
+
+### Under the Hood
+
+**Storage:**
+- All registered users are stored in AsyncStorage under `@users`
+- Your current session is stored under `@user` (without your password, of course!)
+- When you log out, only the current session is cleared - your account stays registered
+
+**Authentication:**
+- Signup adds you to the users list
+- Login checks if you exist in that list and verifies your password
+- Passwords are stored as-is (in production, you'd hash them!)
+
+**Navigation:**
+- Uses React Navigation Native Stack
+- Automatically shows Login/Signup if you're not logged in
+- Shows Home if you are logged in
+- Smooth transitions between screens
+
+## Tech Stack
+
+- **React Native** - The framework
+- **React Context API** - For global auth state
+- **AsyncStorage** - For persistent storage
+- **React Navigation** - For screen navigation
+- **React Hooks** - For all the state management
+
+## Project Structure
+
+```
+auth_app/
+├── src/
+│   ├── components/          # Reusable UI components
+│   │   ├── AppButton.js     # Button component
+│   │   ├── AppTextInput.js  # Text input with password toggle
+│   │   ├── AppText.js       # Typography component
+│   │   ├── ErrorBanner.js   # Error message display
+│   │   └── index.js         # Component exports
+│   ├── context/
+│   │   └── AuthContext.js   # Auth state & logic
+│   ├── navigation/
+│   │   └── AppNavigator.js  # Navigation setup
+│   ├── screens/
+│   │   ├── LoginScreen.js   # Login UI
+│   │   ├── SignupScreen.js  # Signup UI
+│   │   └── HomeScreen.js    # Home UI
+│   └── utils/
+│       └── validation.js    # Form validation helpers
+├── App.js                   # Main app component
+└── README.md               # This file!
 ```
 
-## Step 2: Build and run your app
+## Getting Started
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### Prerequisites
 
-### Android
+Make sure you have:
+- Node.js (>= 18)
+- React Native CLI installed
+- iOS Simulator (Mac) or Android Emulator
+- Xcode (for iOS) or Android Studio (for Android)
 
-```sh
-# Using npm
-npm run android
+### Installation
 
-# OR using Yarn
-yarn android
-```
+1. **Clone or download this project**
 
-### iOS
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+3. **iOS Setup** (if you're on Mac and want to run iOS)
+   ```bash
+   cd ios
+   pod install
+   cd ..
+   ```
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+4. **Run the app**
+   
+   For iOS:
+   ```bash
+   npm run ios
+   ```
+   
+   For Android:
+   ```bash
+   npm run android
+   ```
 
-```sh
-bundle install
-```
+That's it! The app should launch on your simulator/emulator.
 
-Then, and every time you update your native dependencies, run:
+## Features Breakdown
 
-```sh
-bundle exec pod install
-```
+### ✅ What's Included
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+- **Complete Auth Flow** - Signup, login, logout
+- **Form Validation** - Real-time error messages
+- **Password Visibility Toggle** - Show/hide password
+- **Persistent Storage** - Users and sessions survive app restarts
+- **Protected Routes** - Can't access Home without logging in
+- **Loading States** - Buttons show loading indicators
+- **Error Handling** - User-friendly error messages
+- **Clean UI** - Modern, rounded inputs and consistent spacing
+- **Reusable Components** - Button, TextInput, Text components
 
-```sh
-# Using npm
-npm run ios
+### 🎨 UI Components
 
-# OR using Yarn
-yarn ios
-```
+- **AppButton** - Primary, secondary, and danger variants
+- **AppTextInput** - With optional password toggle
+- **AppText** - Typography with variants (h1, h2, body, etc.)
+- **ErrorBanner** - For displaying error messages
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## How to Use
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Creating an Account
 
-## Step 3: Modify your app
+1. Open the app
+2. Tap "Sign Up" at the bottom
+3. Enter your name, email, and password (min 6 characters)
+4. Tap "Sign Up"
+5. You'll be taken to the Login screen
+6. Enter your email and password
+7. Tap "Login"
+8. Welcome! You're now on the Home screen
 
-Now that you have successfully run the app, let's make changes!
+### Logging In
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+1. Enter your registered email and password
+2. Tap "Login"
+3. If credentials are correct, you'll see the Home screen
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### Logging Out
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+1. On the Home screen, tap the red "Logout" button
+2. You'll be taken back to the Login screen
 
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+**Built with ❤️ using React Native**
